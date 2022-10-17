@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  pr_incident_db: #Имя сервиса
+    container_name: pr_incident_db #Имя с которым запустится контейнер
+    hostname: pr_incident_db #Имя "хоста" которым будет считать себя контейнер
+    image: mysql:latest #Образ из которого запускается контейнер
+    volumes: #Подключаемые директории
+      - dbdata:/var/lib/mysql #Директории вида хост_директория:директория_контейнера
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    env_file:
+      - .env
+    environment: #переменные окружения
+      MYSQL_ROOT_PASSWORD: 23012002
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: project_incident_db
+    ports: # Сопоставление портов хост-машины и контейнера
+      - 3306:3306
+    restart: unless-stopped #условие для рестарта в случае остановки контейнера
+
+  pr_incident_app:
+    container_name: pr_incident_app
+    hostname: pr_incident_app
+    build: # Параметры для сборки приложения
+      context: ./app # Каталог, используемый для сборки
+      dockerfile: Dockerfile # Файл, используемый для сборки образа приложения
+    ports:
+     - 10080:80
+    volumes:
+      - ./app/:/app
+    restart: unless-stopped
+    depends_on: # Указание на зависимость сервиса от другого сервиса
+      - pr_incident_db
+
+volumes:
+  dbdata:
