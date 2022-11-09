@@ -20,11 +20,12 @@ services:
 
   pr_incident_app:
     container_name: pr_incident_app
+    image: mksmp/project_incident:latest
     hostname: pr_incident_app
     build: # Параметры для сборки приложения
       context: ./app # Каталог, используемый для сборки
       dockerfile: Dockerfile # Файл, используемый для сборки образа приложения
-    ports:
+    ports: 
      - 10080:80
     volumes:
       - ./app/:/app
