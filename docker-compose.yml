@@ -23,12 +23,10 @@ services:
     image: mksmp/project_incident:latest
     hostname: pr_incident_app
     build: # Параметры для сборки приложения
-      context: ./app # Каталог, используемый для сборки
+      context: ./ # Каталог, используемый для сборки
       dockerfile: Dockerfile # Файл, используемый для сборки образа приложения
     ports:
      - 10080:80
-    volumes:
-      - ./app/:/app
     restart: unless-stopped
     depends_on: # Указание на зависимость сервиса от другого сервиса
       - pr_incident_db
