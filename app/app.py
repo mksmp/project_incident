@@ -17,6 +17,10 @@ connection = pymysql.connect(host=MYSQL_HOST,
                             cursorclass=pymysql.cursors.DictCursor)
 
 
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return jsonify({'ip':request.remote_addr}), 200
+
 
 @app.route('/', methods=['GET'])
 def some_method():
