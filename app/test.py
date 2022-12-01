@@ -1,18 +1,18 @@
 import json
 import unittest
+
 import requests
-from flask import request
 
 
 class TestAPI(unittest.TestCase):
 
     def test1(self):
-        resp = requests.get("http://127.0.0.1:10080/")
+        resp = requests.get("http://127.0.0.1:5000/")
         self.assertEqual(resp.status_code, 200)
         print("test1: OK")
         
     def test2(self):
-        resp = requests.get("http://127.0.0.1:10080/accident/getAll")
+        resp = requests.get("http://127.0.0.1:5000/accident/getAll")
         self.assertEqual(resp.status_code, 200)
         print("test2: OK")
         
@@ -24,19 +24,18 @@ class TestAPI(unittest.TestCase):
         'end': "2022-11-02"
         }
 
-        resp = requests.get("http://127.0.0.1:10080/accident/getBetween", data=json.dumps(data), headers=headers)
+        resp = requests.get("http://127.0.0.1:5000/accident/getBetween", data=json.dumps(data), headers=headers)
         self.assertEqual(resp.status_code, 200)
         print("test3: OK")
 
     def test4(self):
-        resp = requests.post("http://127.0.0.1:10080/accident/create")
+        resp = requests.post("http://127.0.0.1:5000/accident/create")
         self.assertEqual(resp.status_code, 200)
         print("test4: OK")
 
         
 if __name__ == '__main__':
     tester = TestAPI()
-    print(request.remote_addr)
     tester.test1()
     tester.test2()
     tester.test3()
