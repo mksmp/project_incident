@@ -1,4 +1,5 @@
 import pymysql.cursors
+import requests
 from config import MYSQL_DATABASE, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER
 from flask import Flask, jsonify, request
 
@@ -17,10 +18,6 @@ connection = pymysql.connect(host=MYSQL_HOST,
                             cursorclass=pymysql.cursors.DictCursor)
 
 
-@app.route("/get_my_ip", methods=["GET"])
-def get_my_ip():
-    return jsonify({'ip':request.remote_addr}), 200
-
 
 @app.route('/', methods=['GET'])
 def some_method():
@@ -29,32 +26,60 @@ def some_method():
         }
   return jsonify(resp)
 
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return jsonify({'ip': request.remote_addr})
+
 @app.route('/accident/getAll', methods=['GET'])
 def getAllAccidents():
     with connection.cursor() as cursor:
-        sql = 'SELECT accidents.name, accidents.description, types.type, accidents.date FROM accidents INNER JOIN types on accidents.type_id = types.id;'
+        sql = 'SELECT * FROM `Members` JOIN `accidents_members` on `Members`.`id` = `accidents_members`.`members_id`;'
+        cursor.execute(sql)
+        members = cursor.fetchall()
+
+    print(members)
+    print()
+    print()
+    print()
+    with connection.cursor() as cursor:
+        sql = 'SELECT accidents.id, accidents.name, accidents.description, types.type, accidents.date FROM accidents INNER JOIN types on accidents.type_id = types.id;'
         cursor.execute(sql)
         res = cursor.fetchall()
+
+    print(res)
     if len(res) == 0:
         return jsonify({'error': "Данных нет"})
     print(res)
     l = list()
     for i in range(len(res)):
         data = {
+            'id': res[i]["id"],
             'Название': res[i]["name"],
             'Описание': res[i]["description"],
             'Тип': res[i]["type"],
             'Дата': res[i]["date"],
+            'Участники': list()
         }
+        print(res[i]["id"])
+        print()
+        for j in members:
+            print(j["accidents_id"])
+            if res[i]["id"] == j["accidents_id"]:
+               full_name = j['first_name'] + " " + j['initials'] 
+               data['Участники'].append(full_name)
         l.append(data)
+        print()
 
     return jsonify(l)
 
-@app.route('/accident/getById:<int:id>', methods=['GET'])
-def getAccidentsById(id):
+@app.route('/accident/getById', methods=['GET'])
+def getAccidentsById():
+    data = {
+        'id': request.json['id'],
+    }
     with connection.cursor() as cursor:
         sql = 'SELECT accidents.name, accidents.description, types.type, accidents.date FROM accidents INNER JOIN types on accidents.type_id = types.id WHERE accidents.id = %s;'
-        cursor.execute(sql, (str(id)))
+        cursor.execute(sql, (data['id']))
         res = cursor.fetchall()
     if len(res) == 0:
         return jsonify({'error': "Данных нет"})
@@ -64,7 +89,6 @@ def getAccidentsById(id):
         'Тип': res[0]["type"],
         'Дата': res[0]["date"],
     }
-
 
     return jsonify(data)
 
