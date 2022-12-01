@@ -1,3 +1,0 @@
-#FILE: .bandit
-[bandit]
-exclude = app/config.py, app/test.py
