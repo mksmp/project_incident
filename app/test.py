@@ -1,7 +1,7 @@
 import json
 import unittest
-
 import requests
+from flask import request
 
 
 class TestAPI(unittest.TestCase):
@@ -36,6 +36,7 @@ class TestAPI(unittest.TestCase):
         
 if __name__ == '__main__':
     tester = TestAPI()
+    print(request.remote_addr)
     tester.test1()
     tester.test2()
     tester.test3()
