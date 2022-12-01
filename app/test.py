@@ -13,7 +13,7 @@ class TestAPI(unittest.TestCase):
         
     def test2(self):
         resp = requests.get("http://127.0.0.1:5000/accident/getAll")
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 400)
         print("test2: OK")
         
     def test3(self):
