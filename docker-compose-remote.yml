@@ -8,7 +8,6 @@ services:
     image: mysql:latest #Образ из которого запускается контейнер
     volumes: #Подключаемые директории
       - dbdata:/var/lib/mysql #Директории вида хост_директория:директория_контейнера
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     environment: #переменные окружения
       MYSQL_ROOT_PASSWORD: 23012002
       MYSQL_USER: admin
