@@ -1,5 +1,0 @@
-Flask
-pymysql
-flask-migrate
-flask-sqlalchemy
-cryptography
