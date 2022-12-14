@@ -1,5 +1,4 @@
-SECRET_KEY = '72f5a72a25d8d5f5a10a9fd21eeec4b2cb347e839c82b061e4ff5e6ad5011b88'
-MYSQL_USER = 'admin'
-MYSQL_DATABASE = 'project_incident_db'
-MYSQL_HOST = 'pr_incident_db'
-MYSQL_PASSWORD = 'admin'
+SECRET_KEY = 'e1c6fe5819c4bc8857e2cbce963a7be5904692eba862d1a809f195710aff5cdc'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://admin:admin@pr_incident_db/project_incident_db'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_ECHO = True
