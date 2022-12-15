@@ -34,3 +34,12 @@ class Members(db.Model):
 
     def __repr__(self):
         return f'<Members: {self.member}>'
+
+class Temp_Table(db.Model):
+    __tablename__ = 'tmp_tbl'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name_tmp = db.Column(db.String(100), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f'<Members: {self.name_tmp}>'
