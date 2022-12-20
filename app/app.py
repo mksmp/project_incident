@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+import logging
+
+logging.basicConfig(format='%(asctime)s: %(levelname)s - %(message)s - %(funcName)s')
 
 app = Flask(__name__)
 application = app
@@ -10,7 +13,12 @@ application = app
 
 app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
+
+logging.info("successful connection to DB")
+
 migrate = Migrate(app, db)
+
+logging.info("successful start application")
 
 from models import Accidents
 
@@ -24,10 +32,12 @@ def some_method():
 
 @app.route("/get_my_ip", methods=["GET"])
 def get_my_ip():
+    logging.debug("request to /get_my_ip")
     return jsonify({'ip': request.remote_addr})
 
 @app.route('/accident/getAll', methods=['GET'])
 def getAllAccidents():
+    logging.debug("request to /accident/getAll")
     s = Accidents.query.all()
     print(s)
     l = list()
